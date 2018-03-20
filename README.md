@@ -13,6 +13,21 @@ to do list
 8.  test min radius
 9.  add accretion, test..
 10. add cooling, test..
+11. fix grid overlap (see step 4 notes)
+
+
+# 4. Edit Grid Setup
+
+Fixed a bug in the grid overlap scheme
+
+![alt text](http://astro.physics.ncsu.edu/~cekolb/research/circumstellar-environments/img/overlap.png)
+
+everything appears to be working
+ - mass is conserved
+ - tested with gamma = 1, 5/3
+ - tested with debug compiler
+
+ NOTE!!! setting novery/z = 6 looks like 4 overlap on the z-plane - fix this
 
 
 # 3. test mass conservation for steady flow
