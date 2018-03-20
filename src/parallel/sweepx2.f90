@@ -10,7 +10,7 @@ use sweeps
 
 ! LOCALS
 integer :: i, j, k, n, m, myj, myk
-real :: rad, xexpand, dis, costhetan
+real :: rad, xexpand, costhetan
 
 real :: cphi, ctheta
 
@@ -76,25 +76,28 @@ do k = 1, ks
     xa (nmin-n)= xa (nmin-n+1) - dx (nmin-n)
     xa0(nmin-n)= xa0(nmin-n+1) - dx0(nmin-n)
     rad = xa(nmin-n) + 0.5d0*dx(nmin-n)
-    u (nmin-n) = rad / time
-    r (nmin-n) = 4.0*sqrt(3.0) * exp(-2.0*sqrt(3.0)*rad/time) / time**3
+
+    u (nmin-n) = 10.0
     v (nmin-n) = 0.0
     w (nmin-n) = 0.0
-    p (nmin-n) = 1.0e-6 * r(nmin-n)*u(nmin-n)**2
+
+    r (nmin-n) = 1.0 / rad**2
+    p (nmin-n) = 1.0e-10 * r(nmin-n)*u(nmin-n)**2
     e (nmin-n) = p(nmin-n)/(gamm*r(nmin-n))+0.5d0*(u(nmin-n)**2+v(nmin-n)**2+w(nmin-n)**2)
     f (nmin-n) = 0.0
-    c (nmin-n) = 1.0
+    c (nmin-n) = 0.0
 
     dx (nmax+n)= dx (nmax)
     dx0(nmax+n)= dx0(nmax)
     xa (nmax+n)= xa (nmax+n-1) + dx (nmax+n-1)
     xa0(nmax+n)= xa0(nmax+n-1) + dx0(nmax+n-1)
-    dis = 0.69 * sqrt(1.3408 + 1.1676*costhetan)
-    r (nmax+n) = 1.0; if (rad>dis) r(nmax+n) = 100.0
-    u (nmax+n) = 0.0
+
+    u (nmax+n) = u(nmax)
     v (nmax+n) = 0.0
     w (nmax+n) = 0.0
-    p (nmax+n) = p(nmax)
+
+    r (nmax+n) = 1.0 / rad**2
+    p (nmax+n) = 1.0e-10*r(nmax+n)*u(nmax+n)**2
     e (nmax+n) = p(nmax+n)/(gamm*r(nmax+n))+0.5d0*(u(nmax+n)**2+v(nmax+n)**2+w(nmax+n)**2)
     f (nmax+n) = 0.0
     c (nmax+n) = 0.0
