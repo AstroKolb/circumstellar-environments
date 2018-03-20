@@ -12,9 +12,10 @@ include 'mpif.h'
 
 ! LOCALS
 integer :: i, j, k, mpierr
-real :: xmin, xmax, ymin, ymax, zmin, zmax
+integer novery, noverz
+real :: xmin, xmax, ymin, ymax, zmin, zmax, dely, delz
 real :: ridt, rodt, xvel, yvel, zvel, width, widthz, widthy
-real :: zoom, rad
+real :: zoom, rad, Z1
 real :: perturb
 
 !--------------------------------------------------------------------------------
@@ -25,11 +26,18 @@ ngeomx = 2
 ngeomy = 4
 ngeomz = 5
 
-pi   = 2.0 * asin(1.0)
-ymin =  0.245 * pi
-ymax =  0.755 * pi
-zmin = -0.755 * pi
-zmax = +0.755 * pi
+novery = 6      ! define zone overlap
+noverz = 6
+
+pi   = 2.0*asin(1.0)
+
+dely =     pi/2.0/float(jmax-novery)*float(novery)/2.0
+delz = 3.0*pi/2.0/float(kmax-noverz)*float(noverz)/2.0
+
+ymin =      pi/4.0 - dely
+ymax =  3.0*pi/4.0 + dely
+zmin = -3.0*pi/4.0 - delz
+zmax =  3.0*pi/4.0 + delz
 
 ! set time and cycle counters
 time   = 0.0
@@ -45,20 +53,23 @@ nfile  = 1000
 ! Set up parameters for exponential ejecta; initial scaling determined by time
 time   = 1.0e-03
 xmax = -1.25*time*log(time)
-xmin = xmax * 0.5
+xmin = xmax * 0.1
 
-gam    = 5.0/3.0
+gam    = 1.001!5.0/3.0
+gamm   = gam - 1.0d0
 
-zoom = 0.0
+
+Z1 = (xmax/xmin)**(1.0/float(imax)) - 1.0
+
+zoom = Z1
 rad = 0.0
 
-gamm   = gam - 1.0d0
 !=======================================================================
 ! Set up grid coordinates and parabolic coefficients
 
-call grid(imax,xmin,xmax,zxa,zxc,zdx)
-call grid(jmax,ymin,ymax,zya,zyc,zdy)
-call grid(kmax,zmin,zmax,zza,zzc,zdz)
+call grid(imax,xmin,xmax,zxa,zxc,zdx,zoom)
+call grid(jmax,ymin,ymax,zya,zyc,zdy,0.00)
+call grid(kmax,zmin,zmax,zza,zzc,zdz,0.00)
 
 !=======================================================================
 ! Log parameters of problem in history file
@@ -122,7 +133,7 @@ end
 !#######################################################################
 
 
-subroutine grid( nzones, xmin, xmax, xa, xc, dx  )
+subroutine grid( nzones, xmin, xmax, xa, xc, dx, zoom )
 
 ! Create grid to cover physical size from xmin to xmax
 ! number of physical grid zones is nzones
@@ -134,16 +145,27 @@ subroutine grid( nzones, xmin, xmax, xa, xc, dx  )
 ! LOCALS
 integer :: nzones, n
 real, dimension(nzones) :: xa, dx, xc
-real :: dxfac, xmin, xmax
+real :: dxfac, xmin, xmax, zoom
 
 !=======================================================================
 
-dxfac = (xmax - xmin) / real(nzones)
-do n = 1, nzones
-  xa(n) = xmin + (n-1)*dxfac
-  dx(n) = dxfac
-  xc(n) = xa(n) + 0.5*dx(n)
-enddo
+if (zoom == 0.0d0) then
+  dxfac = (xmax - xmin) / real(nzones)
+  do n = 1, nzones
+    xa(n) = xmin + (n-1)*dxfac
+    dx(n) = dxfac
+    xc(n) = xa(n) + 0.5*dx(n)
+  enddo
+else
+  xa(1) = xmin
+  dx(1) = zoom*xa(1)
+  xc(1) = xa(1) + 0.5d0*dx(1)
+  do n  = 2, nzones
+    xa(n) = xa(n-1)+dx(n-1)
+    dx(n) = zoom*xa(n)
+    xc(n) = xa(n)+0.5d0*dx(n)
+  enddo
+endif
 
 return
 end
