@@ -15,7 +15,14 @@ to do list
 10. add cooling, test..
 
 
-Verifying working code (downloaded from DrB email, some reorganization)
+# 2. Run with compiler flags
+
+Many issues found, should be working now
+still need to run with -Wall at some point
+
+
+# 1. Verifying working code 
+(downloaded from DrB email, some reorganization)
 
 Code is working, appears to generate a SSDW
 ![alt text](http://astro.physics.ncsu.edu/~cekolb/research/circumstellar-environments/img/initial.png)
