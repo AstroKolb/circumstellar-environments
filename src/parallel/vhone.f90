@@ -262,21 +262,24 @@ do while (ncycle < ncycend)
 
 ! =============================================================
 ! Find maximum radius of shock and terminate if it gets close to the edge
-  rshockmax = 0.0
-  do k = 1, ks
-   do j = 1, js
-     i = imax
-     do while (zpr(i,j,k) < 0.02)
-      i = i - 1
-     enddo
-     rshockmax = max(rshockmax,zxa(i))
-   enddo
-  enddo
-  call MPI_ALLREDUCE( rshockmax, Rs_max, 1, VH1_DATATYPE, MPI_MAX, MPI_COMM_WORLD, mpierr )
-  if (Rs_max > zxa(imax-6)) then
-    xexpand = 0.7*zdx(imax)/zxa(imax)
-  else
-    xexpand = 0.0
+  xexpand = 0.0
+  if (.false.) then
+    rshockmax = 0.0
+    do k = 1, ks
+    do j = 1, js
+      i = imax
+      do while (zpr(i,j,k) < 0.02)
+        i = i - 1
+      enddo
+      rshockmax = max(rshockmax,zxa(i))
+    enddo
+    enddo
+    call MPI_ALLREDUCE( rshockmax, Rs_max, 1, VH1_DATATYPE, MPI_MAX, MPI_COMM_WORLD, mpierr )
+    if (Rs_max > zxa(imax-6)) then
+      xexpand = 0.7*zdx(imax)/zxa(imax)
+    else
+      xexpand = 0.0
+    endif
   endif
 ! =============================================================
 
