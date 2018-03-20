@@ -13,3 +13,9 @@ to do list
 8.  test min radius
 9.  add accretion, test..
 10. add cooling, test..
+
+
+Verifying working code (downloaded from DrB email, some reorganization)
+
+Code is working, appears to generate a SSDW
+![alt text](http://astro.physics.ncsu.edu/~cekolb/research/circumstellar-environments/img/initial.png)
