@@ -15,10 +15,25 @@ to do list
 10. add cooling, test..
 
 
+# 3. test mass conservation for steady flow
+
+added diagnostics.f90 subroutines
+ - outputs to 'output/*prefix*_diagnostics.dat'
+
+using u=10, rho=1/r^2, iso:
+![alt text](http://astro.physics.ncsu.edu/~cekolb/research/circumstellar-environments/img/mass_conservation1.png)
+
+ - identical plot for gamma=5/3
+ - checked with debug flags
+
+
 # 2. Run with compiler flags
 
 Many issues found, should be working now
 still need to run with -Wall at some point
+
+verified the results are unchanged from initial problem
+ - used compiler flags during test
 
 
 # 1. Verifying working code 
