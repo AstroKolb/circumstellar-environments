@@ -16,6 +16,8 @@ real :: xf0, sinxf0
 real, dimension(maxsweep) :: grav, fict, xf
 
 !--------------------------------------------------------------
+
+xf0 = xf0
  
 if (sweep == 'x') then
 

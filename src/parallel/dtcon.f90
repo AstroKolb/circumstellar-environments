@@ -12,7 +12,7 @@ include 'mpif.h'
 
 ! LOCALS
 integer :: i, j, k, mpierr
-real ::  ridt, rodt, dtx, dt3, xvel, yvel, zvel, width, widthy, widthz
+real ::  ridt, rodt, dtx, dt3, xvel, yvel, zvel, widthy, widthz
 
 !------------------------------------------------------------------------
 !   Hydro constraint on timestep.  Use R*d(theta) if y geometry is angular

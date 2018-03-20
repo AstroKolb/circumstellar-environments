@@ -12,6 +12,8 @@ use sweeps
 integer :: i, j, k, n, myj, myk
 real :: rad, xexpand, costhetan, dis
 
+real :: cphi, ctheta
+
 !-----------------------------------------------------------------------
 
 sweep  = 'x'

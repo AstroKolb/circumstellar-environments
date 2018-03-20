@@ -15,6 +15,8 @@ character(LEN=1) :: char, tmp3
 character(LEN=4) :: tmp1, tmp2
 character(LEN=50) :: filename
 CHARACTER(LEN=16), DIMENSION(5) :: varname
+
+INTEGER :: i, j, k
  
 INTEGER :: status, ncid, gathbuffer_size, mpierr, m, nvar, jsk, nv
 INTEGER :: xDimID, yDimID, zDimID

@@ -11,10 +11,11 @@ use zone
 include 'mpif.h'
 
 ! LOCALS
-integer :: i, j, k, mpierr, ishock
-real :: ridt, xvel, yvel, zvel, width, widthz, widthy
-real :: zoom, rad, vthe, vphi, theta, phi, dshock, pshock, ushock
-real :: density, pressure, radius, perturb, port, bump, costheta
+integer :: i, j, k, mpierr
+real :: xmin, xmax, ymin, ymax, zmin, zmax
+real :: ridt, rodt, xvel, yvel, zvel, width, widthz, widthy
+real :: zoom, rad
+real :: perturb
 
 !--------------------------------------------------------------------------------
 ! Set up grid geometry: This Yin-Yang code is strictly 3D spherical
@@ -47,8 +48,9 @@ xmax = -1.25*time*log(time)
 xmin = xmax * 0.5
 
 gam    = 5.0/3.0
-damb   = gam
-pamb   = 1.0
+
+zoom = 0.0
+rad = 0.0
 
 gamm   = gam - 1.0d0
 !=======================================================================
@@ -146,7 +148,7 @@ subroutine grid( nzones, xmin, xmax, xa, xc, dx  )
 !----------------------------------------------------------------------
 
 ! LOCALS
-integer :: nzones, n, i
+integer :: nzones, n
 real, dimension(nzones) :: xa, dx, xc
 real :: dxfac, xmin, xmax
 

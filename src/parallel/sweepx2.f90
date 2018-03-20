@@ -9,8 +9,10 @@ use global
 use sweeps
 
 ! LOCALS
-integer :: i, j, k, n, myj, myk
+integer :: i, j, k, n, m, myj, myk
 real :: rad, xexpand, dis, costhetan
+
+real :: cphi, ctheta
 
 !-----------------------------------------------------------------------
 

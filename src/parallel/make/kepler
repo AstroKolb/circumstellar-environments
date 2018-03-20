@@ -10,9 +10,22 @@ VPATH = ../PPMLR
 #               Note that the C library (-lc) must ALWAYS be the last library
 #               in the load step on both the XMP and the Cray 2
 # COMMAND       Name of the executable
+# -g  :: needed to turn on debugging
+# -Wall :: look for unused variables, uninitialized functions
+# -Wextra :: look for uninitialized variables
+# -Warray-temporaries :: look for temp arrays (don't use this)
+# -Wconversion :: checks for conversions (not necessary)
+# -fimplicit-none :: checks for undefined variables (ALWAYS INCLUDE!)
+# -fbacktrace :: ???
+# -ffree-line-length-0 :: ???
+# -ffpe-trap=zero,overflow,underflow :: ???
+# -finit-real=nan :: initialize reals as nan (SLOW!)
+
+# 0.67 mins vs 0.33
 
 F90 = mpif90 
 FFLAGS = -c -O3 -fdefault-real-8 -I/common/software/netcdf/include
+#FFLAGS = -c -O3 -fdefault-real-8 -g -finit-real=nan -fimplicit-none -I/common/software/netcdf/include
 LDR=  mpif90
 LDRFLAGS= 
 LIBS=   -L/common/software/netcdf/lib -lnetcdf

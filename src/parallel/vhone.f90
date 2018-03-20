@@ -52,10 +52,13 @@ integer :: ncycend, nprin, ndump, nmovie, tmpcyc, mpierr, yy
 integer :: a2abuffer_size,start_cycl, namelength
 integer, dimension(4) :: indat_ints
 
-real :: endtime,tprin,xmin,xmax,ymin,ymax,zmin,zmax
+real :: endtime, tprin
 real :: rshockmax, Rs_max, xexpand
 real, dimension(3) :: indat_rels
 real*8 :: start_time, end_time, run_time, zones
+
+real :: olddt, tmovie
+integer :: nfile_start, i, j, k
 
 namelist / hinput / rstrt, prefix, ncycend, ndump, nprin, nmovie, endtime, tprin, tmovie
 

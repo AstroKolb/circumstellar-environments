@@ -10,13 +10,14 @@ use zone
 character(len=8)  :: dumpfile
 character(len=50) :: filename
 character(len=1)  :: sf1,sf2,char
+integer           :: isf1, isf2
 
 !----------------------------------------------------------------------
 
 filename = trim(prefix) // dumpfile
 open(unit=4,file=filename,status='unknown',form='unformatted')
 write(4) zro,zpr,zux,zuy,zuz,zfl,zcl,zxa,zxc,zdx,zya,zyc,zdy,zza,zzc,zdz, &
-  gam,gamm,pi,time,dt,timem,timep,GM,omega,                           &
+  gam,gamm,pi,time,dt,timem,timep,                           &
   uinflo,vinflo,winflo,dinflo,pinflo,einflo,                          &
   uotflo,votflo,wotflo,dotflo,potflo,eotflo,                          &
   ndim,nfile,ncycle,ncycp,ncycm,ncycd,ngeomx,ngeomy,ngeomz,           &
@@ -61,6 +62,7 @@ character(len=8)  :: dumpfile
 character(len=8)  :: todayis
 character(len=50) :: filename
 character(len=1)  :: sf1,sf2,char
+integer           :: isf1, isf2
 
 !----------------------------------------------------------------------
 
@@ -74,7 +76,7 @@ endif
 filename = trim(prefix) // dumpfile
 open(unit=4,file=filename,status='old',form='unformatted')
 read(4) zro,zpr,zux,zuy,zuz,zfl,zcl,zxa,zxc,zdx,zya,zyc,zdy,zza,zzc,zdz,  &
-  gam,gamm,pi,time,dt,timem,timep,GM,omega,                           &
+  gam,gamm,pi,time,dt,timem,timep,                           &
   uinflo,vinflo,winflo,dinflo,pinflo,einflo,                          &
   uotflo,votflo,wotflo,dotflo,potflo,eotflo,                          &
   ndim,nfile,ncycle,ncycp,ncycm,ncycd,ngeomx,ngeomy,ngeomz,           &
