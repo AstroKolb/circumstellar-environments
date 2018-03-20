@@ -47,7 +47,7 @@ time   = 1.0e-03
 xmax = -1.25*time*log(time)
 xmin = xmax * 0.5
 
-gam    = 1.001!5.0/3.0
+gam    = 5.0/3.0
 
 zoom = 0.0
 rad = 0.0
