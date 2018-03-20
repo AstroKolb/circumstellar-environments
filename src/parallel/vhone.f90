@@ -226,6 +226,8 @@ call corner
 call boundaryYsetup
 call boundaryZsetup
 
+call diagnostics_init
+
 if(mype == 0) then
   start_time = MPI_WTIME()
   start_cycl = ncycle
@@ -290,6 +292,8 @@ do while (ncycle < ncycend)
   call sweepy
   call sweepx2(xexpand)
 
+  call diagnostics
+
   time  = time  + 2.0*dt
   timep = timep + 2.0*dt
   timem = timem + 2.0*dt
@@ -331,6 +335,8 @@ if(mype == 0) then
   close( 8 )
 
 endif
+
+call diagnostics_finalize
       
 call MPI_FINALIZE(mpierr)
 

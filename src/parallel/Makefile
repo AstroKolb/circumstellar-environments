@@ -24,8 +24,8 @@ VPATH = ../PPMLR
 # 0.67 mins vs 0.33
 
 F90 = mpif90 
-FFLAGS = -c -O3 -fdefault-real-8 -I/common/software/netcdf/include
-#FFLAGS = -c -O3 -fdefault-real-8 -g -finit-real=nan -fimplicit-none -I/common/software/netcdf/include
+#FFLAGS = -c -O3 -fdefault-real-8 -I/common/software/netcdf/include
+FFLAGS = -c -O3 -fdefault-real-8 -g -finit-real=nan -fimplicit-none -I/common/software/netcdf/include
 LDR=  mpif90
 LDRFLAGS= 
 LIBS=   -L/common/software/netcdf/lib -lnetcdf
@@ -34,7 +34,7 @@ LIBS=   -L/common/software/netcdf/lib -lnetcdf
 
 VHOBJS = vh1mods.o zonemods.o dtcon.o dump.o evolve.o flatten.o forces.o \
          init.o parabola.o ppmlr.o volume.o prin.o remap.o riemann.o \
-         states.o sweepx1.o sweepx2.o sweepy.o sweepz.o \
+         states.o sweepx1.o sweepx2.o sweepy.o sweepz.o diagnostics.o \
          corner.o boundaryY.o  boundaryZ.o  boundaryYsetup.o  boundaryZsetup.o \
 			vhone.o
 
@@ -73,6 +73,8 @@ sweepx2.o:  sweepx1.f90  global.mod zone.mod sweeps.mod sweepsize.mod
 sweepy.o:   sweepy.f90   global.mod zone.mod sweeps.mod sweepsize.mod
 sweepz.o:   sweepz.f90   global.mod zone.mod sweeps.mod sweepsize.mod
 prin.o:     prin.f90     global.mod zone.mod sweeps.mod sweepsize.mod
+
+diagnostics.o: diagnostics.f90 global.mod zone.mod
 
 
 
