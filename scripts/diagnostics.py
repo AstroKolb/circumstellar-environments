@@ -7,11 +7,31 @@ path = '../output/Boots_diagnostics.dat'
 data = np.loadtxt(path)
 
 
-time = data[:,0]
-mass = data[:,1]
+time  = data[:,0]
+mass1 = data[:,1]
+mass2 = data[:,2]
+mass3 = data[:,3]
+mass4 = data[:,4]
+flux1 = data[:,5]
+flux2 = data[:,6]
+flux3 = data[:,7]
+flux4 = data[:,8]
 
 
-plt.plot(time, mass)
+plt.plot(time, mass1/mass1[-1], label='mass1')
+plt.plot(time, mass2/mass2[-1], label='mass2')
+plt.plot(time, mass3/mass3[-1], label='mass3')
+plt.plot(time, mass4/mass4[-1], label='mass4')
 plt.xlabel('time')
 plt.ylabel('mass')
+plt.legend()
+plt.show()
+
+plt.plot(time, flux1, label='flux1')
+plt.plot(time, flux2, label='flux2')
+plt.plot(time, flux3, label='flux3')
+plt.plot(time, flux4, label='flux4')
+plt.xlabel('time')
+plt.ylabel('flux')
+plt.legend()
 plt.show()
