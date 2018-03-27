@@ -1,11 +1,11 @@
  $hinput
      rstrt   = 'no'
     ,prefix  = 'Boots'
-    ,ncycend = 500
+    ,ncycend = 2000
     ,ndump   = 10000
-    ,nprin   = 250
-    ,nmovie  = 20
-    ,endtime = 5.0e+00
-    ,tprin   = 5.0e+00
-    ,tmovie  = 5.0e-01
+    ,nprin   = 200
+    ,nmovie  = 2000000
+    ,endtime = 5.0e+99
+    ,tprin   = 5.0e+99
+    ,tmovie  = 5.0e+99
  $end

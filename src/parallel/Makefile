@@ -24,8 +24,8 @@ VPATH = ../PPMLR
 # 0.67 mins vs 0.33
 
 F90 = mpif90 
-#FFLAGS = -c -O3 -fdefault-real-8 -I/common/software/netcdf/include
-FFLAGS = -c -O3 -fdefault-real-8 -g -finit-real=nan -fimplicit-none -I/common/software/netcdf/include
+FFLAGS = -c -O3 -fdefault-real-8 -I/common/software/netcdf/include
+#FFLAGS = -c -O3 -fdefault-real-8 -g -finit-real=nan -fimplicit-none -I/common/software/netcdf/include
 LDR=  mpif90
 LDRFLAGS= 
 LIBS=   -L/common/software/netcdf/lib -lnetcdf
