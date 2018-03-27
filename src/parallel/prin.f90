@@ -14,30 +14,30 @@ include 'mpif.h'
 character(LEN=1) :: char, tmp3
 character(LEN=4) :: tmp1, tmp2
 character(LEN=50) :: filename
-CHARACTER(LEN=16), DIMENSION(5) :: varname
+CHARACTER(LEN=16), DIMENSION(6) :: varname
 
 INTEGER :: i, j, k
  
 INTEGER :: status, ncid, gathbuffer_size, mpierr, m, nvar, jsk, nv
 INTEGER :: xDimID, yDimID, zDimID
-INTEGER, DIMENSION(3) :: varID
+INTEGER, DIMENSION(6) :: varID
 INTEGER :: XScale_varID, YScale_varID, ZScale_varID
 
 REAL, DIMENSION(kmax/pez) :: zshort
 REAL, DIMENSION(imax,jmax,kmax/pez) :: prin_buff
-REAL, DIMENSION(imax,3,jmax/pey,kmax/pez) :: send_buff
-REAL, DIMENSION(imax,3,jmax/pey,kmax/pez,pey) :: recv_buff
+REAL, DIMENSION(imax,6,jmax/pey,kmax/pez) :: send_buff
+REAL, DIMENSION(imax,6,jmax/pey,kmax/pez,pey) :: recv_buff
 
 !------------------------------------------------------------------------------
 ! everybody loads up a send buffer; data is gathered on jcol=0 procs.
-nvar = 3   ! # of 3D arrays to write into netcdf file
+nvar = 6   ! # of 3D arrays to write into netcdf file
 
 varname(1) = 'Density'
 varname(2) = 'Pressure'
-varname(3) = 'Ejecta'
-!varname(3) = 'Xvelocity'
-!varname(4) = 'Yvelocity'
-!varname(5) = 'Zvelocity'
+varname(3) = 'Color'
+varname(4) = 'Xvelocity'
+varname(5) = 'Yvelocity'
+varname(6) = 'Zvelocity'
 
 do k = 1, ks
  do j = 1, js
@@ -45,6 +45,9 @@ do k = 1, ks
     send_buff(i,1,j,k) = zro(i,j,k)
     send_buff(i,2,j,k) = zpr(i,j,k)
     send_buff(i,3,j,k) = zcl(i,j,k)
+    send_buff(i,4,j,k) = zux(i,j,k)
+    send_buff(i,5,j,k) = zuy(i,j,k)
+    send_buff(i,6,j,k) = zuz(i,j,k)
   enddo
  enddo
 enddo
