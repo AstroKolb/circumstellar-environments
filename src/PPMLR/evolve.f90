@@ -6,6 +6,7 @@ subroutine evolve( umid, pmid )
 ! GLOBALS
 use global
 use sweeps
+use zone
       
 IMPLICIT NONE
 
@@ -71,7 +72,7 @@ do n = nmin-3, nmax+3
   r(n) = max(r(n),smallr)
   uold (n) = u(n)
   u(n) = u(n) - dtbdm(n)*(pmid(n+1)-pmid(n))*0.5d0*(amid(n+1)+amid(n)) + 0.5d0*dt*(grav0(n)+fict0(n)+grav1(n)+fict1(n))
-  e(n) = e(n) - dtbdm(n)*(amid(n+1)*upmid(n+1) - amid(n)*upmid(n))
+  e(n) = e(n) - dtbdm(n)*(amid(n+1)*upmid(n+1) - amid(n)*upmid(n)) + 0.5d0*dt*(uold(n)*grav0(n) + u(n)*grav1(n))
 enddo
 
 do n = nmin-3, nmax+3
