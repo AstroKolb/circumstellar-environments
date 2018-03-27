@@ -75,14 +75,15 @@ do k = 1, ks
     dx0(nmin-n)= dx0(nmin)
     xa (nmin-n)= xa (nmin-n+1) - dx (nmin-n)
     xa0(nmin-n)= xa0(nmin-n+1) - dx0(nmin-n)
+
     rad = xa(nmin-n) + 0.5d0*dx(nmin-n)
 
-    u (nmin-n) = 10.0
+    u (nmin-n) = uin(n)
     v (nmin-n) = 0.0
     w (nmin-n) = 0.0
 
-    r (nmin-n) = 1.0 / rad**2
-    p (nmin-n) = 1.0e-10 * r(nmin-n)*u(nmin-n)**2
+    r (nmin-n) = capI / (u(nmin-n)*rad**2)
+    p (nmin-n) = r(nmin-n)*kB*Tmp/mp
     e (nmin-n) = p(nmin-n)/(gamm*r(nmin-n))+0.5d0*(u(nmin-n)**2+v(nmin-n)**2+w(nmin-n)**2)
     f (nmin-n) = 0.0
     c (nmin-n) = 0.0
@@ -92,12 +93,14 @@ do k = 1, ks
     xa (nmax+n)= xa (nmax+n-1) + dx (nmax+n-1)
     xa0(nmax+n)= xa0(nmax+n-1) + dx0(nmax+n-1)
 
+    rad = xa(nmax+n) + 0.5d0*dx(nmax+n)
+
     u (nmax+n) = u(nmax)
     v (nmax+n) = 0.0
     w (nmax+n) = 0.0
 
-    r (nmax+n) = 1.0 / rad**2
-    p (nmax+n) = 1.0e-10*r(nmax+n)*u(nmax+n)**2
+    r (nmax+n) = r(nmax)!II / (u(nmax+n)*rad**2)
+    p (nmax+n) = p(nmax)!r(nmax+n)*kB*Tmp/mp
     e (nmax+n) = p(nmax+n)/(gamm*r(nmax+n))+0.5d0*(u(nmax+n)**2+v(nmax+n)**2+w(nmax+n)**2)
     f (nmax+n) = 0.0
     c (nmax+n) = 0.0

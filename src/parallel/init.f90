@@ -16,7 +16,7 @@ integer novery, noverz
 real :: xmin, xmax, ymin, ymax, zmin, zmax, dely, delz
 real :: ridt, rodt, xvel, yvel, zvel, width, widthz, widthy
 real :: zoom, rad, Z1
-real :: perturb
+real :: tmpu, RHS, dm
 
 !--------------------------------------------------------------------------------
 ! Set up grid geometry: This Yin-Yang code is strictly 3D spherical
@@ -51,18 +51,32 @@ nfile  = 1000
 
 !======================================================================
 ! Set up parameters for exponential ejecta; initial scaling determined by time
-time   = 1.0e-03
-xmax = -1.25*time*log(time)
-xmin = xmax * 0.1
+time   = 0.0
 
 gam    = 1.001!5.0/3.0
 gamm   = gam - 1.0d0
 
 
+GMP = 10.0 * GM
+Tmp = 3.0e3
+dm  = 1.0e-6
+
+
+xmin = 2500*Rsun
+xmax = 50000*Rsun
+
+
+! parker wind calculations
+cs2   = gam * kB * Tmp / mp
+uc    = cs2**0.5
+rc    = GMP / (2.0 * cs2)
+rho   = (dm*Msun/3.15e7)/(4.0*pi*rc**2*uc)
+capI  = rho*uc*rc**2
+
+
 Z1 = (xmax/xmin)**(1.0/float(imax)) - 1.0
 
 zoom = Z1
-rad = 0.0
 
 !=======================================================================
 ! Set up grid coordinates and parabolic coefficients
@@ -84,7 +98,46 @@ if (mype == 0) then
 endif
 
 ! initialize grid:
+do i = 1, imax
 
+   RHS = 4.0 * (log(zxc(i)/rc) + rc/zxc(i)) - 3.0
+
+   tmpu = uc
+   do while (tmpu**2/uc**2 - log(tmpu**2/uc**2) < RHS)
+      if (zxc(i) < rc) tmpu = 0.9999*tmpu
+      if (zxc(i) > rc) tmpu = 1.0001*tmpu
+   enddo
+
+   do k = 1, ks
+      do j = 1, js
+         zux(i,j,k) = tmpu
+         zuy(i,j,k) = 0.0
+         zuz(i,j,k) = 0.0
+
+         zro(i,j,k) = capI / (zux(i,j,k) * zxc(i)**2)
+         zpr(i,j,k) = zro(i,j,k)*kB*Tmp/mp
+         zfl(i,j,k) = 0.0
+         zcl(i,j,k) = 0.0
+      enddo
+   enddo
+enddo
+
+do i = 1, 6
+   rad = zxc(1) - zdx(1)*i
+
+   RHS = 4.0 * (log(rad/rc) + rc/rad) - 3.0
+
+   tmpu = uc
+   do while (tmpu**2/uc**2 - log(tmpu**2/uc**2) < RHS)
+      tmpu = 0.9999*tmpu
+   enddo
+
+   uin(i) = tmpu
+enddo
+
+
+
+if (.false.) then
 do k = 1, ks
   do j = 1, js
     do i = 1, imax
@@ -101,6 +154,7 @@ do k = 1, ks
     enddo
   enddo
 enddo
+endif
 
 
 !########################################################################

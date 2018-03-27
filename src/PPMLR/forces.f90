@@ -21,27 +21,27 @@ xf0 = xf0
  
 if (sweep == 'x') then
 
-  do n = nmin-4, nmax+5
-    grav(n) = - GMP / xf(n)**2
+   do n = nmin-4, nmax+5
+      grav(n) = - GMP / xf(n)**2
 
-    fict(n) = (w(n)*w(n)+v(n)*v(n))/xf(n)
-  enddo
+      fict(n) = (w(n)*w(n)+v(n)*v(n))/xf(n)
+   enddo
 
 else if (sweep == 'y') then
 
-  do n = nmin-4, nmax+5
-    grav(n) = 0.0d0
+   do n = nmin-4, nmax+5
+      grav(n) = 0.0d0
 
-    fict(n) = v(n)*v(n)*cos(xf(n))/(radius*sin(xf(n))) - u(n)*w(n)/radius
-  enddo
+      fict(n) = v(n)*v(n)*cos(xf(n))/(radius*sin(xf(n))) - u(n)*w(n)/radius
+   enddo
 
 else
 
-  do n = nmin-4, nmax+5
-    grav(n) = 0.0d0
-    
-    fict(n) = - u(n)*w(n)/radius*cos(theta) - u(n)*v(n)/radius*stheta 
-  enddo
+   do n = nmin-4, nmax+5
+      grav(n) = 0.0d0
+      
+      fict(n) = - u(n)*w(n)/radius*cos(theta) - u(n)*v(n)/radius*stheta 
+   enddo
 
 endif
 
