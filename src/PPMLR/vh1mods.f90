@@ -34,8 +34,12 @@ module global
  real :: uinflo, dinflo, vinflo, winflo, pinflo, einflo 
  real :: uotflo, dotflo, votflo, wotflo, potflo, eotflo
 
- real :: GMP
+ ! parker wind parameters
  real :: Tmp, cs2, uc, rc, rho, capI
+ 
+ ! rotational parameters
+ real :: GMP, GMS, sep, mdot
+ real :: omega, rcm, opd
 
  real, dimension(6) :: uin
       
@@ -65,7 +69,7 @@ real, dimension(maxsweep) :: r, p, e, q, u, v, w, c          ! fluid variables
 real, dimension(maxsweep) :: xa, xa0, dx, dx0, dvol          ! coordinate values
 real, dimension(maxsweep) :: f, flat                         ! flattening parameter
 real, dimension(maxsweep,5) :: para                          ! parabolic interpolation coefficients
-real :: radius, theta, stheta, sphi
+real :: radius, theta, stheta, sphi, ctheta, cphi
 
 end module sweeps
 

@@ -28,10 +28,15 @@ do k = 1, ks
     xvel = abs(zux(i,j,k)) / zdx(i)
     yvel = abs(zuy(i,j,k)) / widthy
     zvel = abs(zuz(i,j,k)) / widthz
+!    if (xvel>1e10 .or. yvel>1e10 .or. zvel>1e10) then
+!      write(*,*) xvel, yvel, zvel, i, j, k
+!      stop
+!    endif
     ridt = max(xvel,yvel,zvel,ridt)
   enddo
  enddo
 enddo
+!write(*,*) svel, ridt
 
 ridt = max(svel,ridt)
 call MPI_ALLREDUCE( ridt, rodt, 1, VH1_DATATYPE, MPI_MAX, MPI_COMM_WORLD, mpierr )

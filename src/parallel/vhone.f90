@@ -239,7 +239,7 @@ endif
 
 do while (ncycle < ncycend)
 
-  if(mype == 0) write(*,*) 'STEP = ',ncycle
+  if(mype == 0) write(*,*) 'STEP = ',ncycle, time/opd
 
   ncycle = ncycle + 1
   ncycp  = ncycp  + 2

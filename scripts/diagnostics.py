@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 
 
-path = '../output/Boots_diagnostics.dat'
+path = '../output/launch4_diagnostics.dat'
 
 data = np.loadtxt(path)
 
@@ -12,10 +12,15 @@ mass1 = data[:,1]
 mass2 = data[:,2]
 mass3 = data[:,3]
 mass4 = data[:,4]
-flux1 = data[:,5]
-flux2 = data[:,6]
-flux3 = data[:,7]
-flux4 = data[:,8]
+flux1 = data[:,5] * 3.15e7/2e33
+flux2 = data[:,6] * 3.15e7/2e33
+flux3 = data[:,7] * 3.15e7/2e33
+flux4 = data[:,8] * 3.15e7/2e33
+
+plt.plot(time, mass1+mass2+mass3+mass4)
+plt.xlabel('time')
+plt.ylabel('mass')
+plt.show()
 
 
 plt.plot(time, mass1/mass1[-1], label='mass1')
