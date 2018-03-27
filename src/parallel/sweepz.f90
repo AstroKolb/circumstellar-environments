@@ -54,6 +54,7 @@ do j = 1, js
   nmax = knmax(myj)
   theta  = zyc(myj)
   stheta = sin(theta)
+  ctheta = cos(theta)
 
   do i = 1, isz
    radius = zxc(i+mypez*isz)

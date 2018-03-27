@@ -16,7 +16,7 @@ integer novery, noverz
 real :: xmin, xmax, ymin, ymax, zmin, zmax, dely, delz
 real :: ridt, rodt, xvel, yvel, zvel, width, widthz, widthy
 real :: zoom, rad, Z1
-real :: tmpu, RHS, dm
+real :: tmpu, RHS
 
 !--------------------------------------------------------------------------------
 ! Set up grid geometry: This Yin-Yang code is strictly 3D spherical
@@ -57,12 +57,14 @@ gam    = 1.001!5.0/3.0
 gamm   = gam - 1.0d0
 
 
-GMP = 10.0 * GM
-Tmp = 3.0e3
-dm  = 1.0e-6
+GMP = 3.12 * GM
+GMS = 9.0 * GM
+sep = 5.e3 * Rsun
 
+Tmp  = 3.0e3
+mdot = 1.0e-6  * Msun / 3.15e7
 
-xmin = 2500*Rsun
+xmin = 1000*Rsun
 xmax = 50000*Rsun
 
 
@@ -70,8 +72,14 @@ xmax = 50000*Rsun
 cs2   = gam * kB * Tmp / mp
 uc    = cs2**0.5
 rc    = GMP / (2.0 * cs2)
-rho   = (dm*Msun/3.15e7)/(4.0*pi*rc**2*uc)
+rho   = (mdot*Msun/3.15e7)/(4.0*pi*rc**2*uc)
 capI  = rho*uc*rc**2
+
+
+! rotational parameters
+omega = ((GMP+GMS)/sep**3)**0.5
+rcm   = sep*GMS/(GMP+GMS)
+opd   = 2.0*pi/omega
 
 
 Z1 = (xmax/xmin)**(1.0/float(imax)) - 1.0
@@ -98,62 +106,89 @@ if (mype == 0) then
 endif
 
 ! initialize grid:
-do i = 1, imax
 
-   RHS = 4.0 * (log(zxc(i)/rc) + rc/zxc(i)) - 3.0
-
-   tmpu = uc
-   do while (tmpu**2/uc**2 - log(tmpu**2/uc**2) < RHS)
-      if (zxc(i) < rc) tmpu = 0.9999*tmpu
-      if (zxc(i) > rc) tmpu = 1.0001*tmpu
-   enddo
-
+if (.true.) then
    do k = 1, ks
       do j = 1, js
-         zux(i,j,k) = tmpu
-         zuy(i,j,k) = 0.0
-         zuz(i,j,k) = 0.0
+         do i = 1, imax
+            zux(i,j,k) = 1.0e+04
+            zuy(i,j,k) = 0.0
+            zuz(i,j,k) = 0.0
 
-         zro(i,j,k) = capI / (zux(i,j,k) * zxc(i)**2)
-         zpr(i,j,k) = zro(i,j,k)*kB*Tmp/mp
-         zfl(i,j,k) = 0.0
-         zcl(i,j,k) = 0.0
+            zro(i,j,k) = mdot / (4.0*pi*zxc(i)**2*zux(i,j,k))
+            zpr(i,j,k) = zro(i,j,k)*kB*Tmp/mp
+            zfl(i,j,k) = 0.0
+            zcl(i,j,k) = 0.0
+         enddo
       enddo
    enddo
-enddo
+endif
 
 do i = 1, 6
-   rad = zxc(1) - zdx(1)*i
-
-   RHS = 4.0 * (log(rad/rc) + rc/rad) - 3.0
-
-   tmpu = uc
-   do while (tmpu**2/uc**2 - log(tmpu**2/uc**2) < RHS)
-      tmpu = 0.9999*tmpu
-   enddo
-
-   uin(i) = tmpu
+   uin(i) = 1.0e+04
 enddo
+
+write(*,*) mdot*Msun/3.14e7/4.0/pi, capI
 
 
 
 if (.false.) then
-do k = 1, ks
-  do j = 1, js
-    do i = 1, imax
+   do i = 1, imax
 
-      zux(i,j,k) = 10.0
-      zuy(i,j,k) = 0.0
-      zuz(i,j,k) = 0.0
-      
-      zro(i,j,k) = 1.0 / zxc(i)**2
-      zpr(i,j,k) = 1.0e-10 * zro(i,j,k)*zux(i,j,k)**2
-      zcl(i,j,k) = 0.0
+      RHS = 4.0 * (log(zxc(i)/rc) + rc/zxc(i)) - 3.0
 
-      zfl(i,j,k) = 0.0
-    enddo
-  enddo
-enddo
+      tmpu = uc
+      do while (tmpu**2/uc**2 - log(tmpu**2/uc**2) < RHS)
+         if (zxc(i) < rc) tmpu = 0.9999*tmpu
+         if (zxc(i) > rc) tmpu = 1.0001*tmpu
+      enddo
+
+      do k = 1, ks
+         do j = 1, js
+            zux(i,j,k) = tmpu
+            zuy(i,j,k) = 0.0
+            zuz(i,j,k) = 0.0
+
+            zro(i,j,k) = mdot / (4.0*pi*zux(i,j,k)*zxc(i)**2)
+            zpr(i,j,k) = zro(i,j,k)*kB*Tmp/mp
+            zfl(i,j,k) = 0.0
+            zcl(i,j,k) = 0.0
+         enddo
+      enddo
+   enddo
+
+   do i = 1, 6
+      rad = zxc(1) - zdx(1)*i
+
+      RHS = 4.0 * (log(rad/rc) + rc/rad) - 3.0
+
+      tmpu = uc
+      do while (tmpu**2/uc**2 - log(tmpu**2/uc**2) < RHS)
+         tmpu = 0.9999*tmpu
+      enddo
+
+      uin(i) = tmpu
+   enddo
+endif
+
+
+
+if (.false.) then
+   do k = 1, ks
+      do j = 1, js
+         do i = 1, imax
+            zux(i,j,k) = 10.0
+            zuy(i,j,k) = 0.0
+            zuz(i,j,k) = 0.0
+            
+            zro(i,j,k) = 1.0 / zxc(i)**2
+            zpr(i,j,k) = 1.0e-10 * zro(i,j,k)*zux(i,j,k)**2
+            zcl(i,j,k) = 0.0
+
+            zfl(i,j,k) = 0.0
+         enddo
+      enddo
+   enddo
 endif
 
 

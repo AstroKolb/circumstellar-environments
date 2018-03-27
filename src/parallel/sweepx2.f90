@@ -12,8 +12,6 @@ use sweeps
 integer :: i, j, k, n, m, myj, myk
 real :: rad, xexpand, costhetan
 
-real :: cphi, ctheta
-
 !-----------------------------------------------------------------------
 
 sweep  = 'x'
@@ -82,8 +80,9 @@ do k = 1, ks
     v (nmin-n) = 0.0
     w (nmin-n) = 0.0
 
-    r (nmin-n) = capI / (u(nmin-n)*rad**2)
+    r (nmin-n) = mdot / (4.0*pi*u(nmin-n)*rad**2)
     p (nmin-n) = r(nmin-n)*kB*Tmp/mp
+
     e (nmin-n) = p(nmin-n)/(gamm*r(nmin-n))+0.5d0*(u(nmin-n)**2+v(nmin-n)**2+w(nmin-n)**2)
     f (nmin-n) = 0.0
     c (nmin-n) = 0.0
@@ -99,8 +98,8 @@ do k = 1, ks
     v (nmax+n) = 0.0
     w (nmax+n) = 0.0
 
-    r (nmax+n) = r(nmax)!II / (u(nmax+n)*rad**2)
-    p (nmax+n) = p(nmax)!r(nmax+n)*kB*Tmp/mp
+    r (nmax+n) = r(nmax)
+    p (nmax+n) = p(nmax)
     e (nmax+n) = p(nmax+n)/(gamm*r(nmax+n))+0.5d0*(u(nmax+n)**2+v(nmax+n)**2+w(nmax+n)**2)
     f (nmax+n) = 0.0
     c (nmax+n) = 0.0

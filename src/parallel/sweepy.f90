@@ -38,6 +38,7 @@ do k = 1, ks
   nmin = jnmin(myk)
   nmax = jnmax(myk)
   sphi = sin(zzc(myk))
+  cphi = cos(zzc(myk))
 
   do i = 1, isy
    radius = zxc(i+mypey*isy)
